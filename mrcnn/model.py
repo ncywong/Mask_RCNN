@@ -1073,7 +1073,7 @@ def rpn_bbox_loss_graph(config, target_bbox, rpn_match, rpn_bbox):
     return loss
 
 
-def mrcnn_class_loss_graph(target_class_ids, pred_class_logits,
+def mrcnn_class_loss_graph(config, target_class_ids, pred_class_logits,
                            active_class_ids):
     """Loss for the classifier head of Mask RCNN.
 
@@ -1096,11 +1096,12 @@ def mrcnn_class_loss_graph(target_class_ids, pred_class_logits,
     pred_active = tf.gather(active_class_ids[0], pred_class_ids)
 
     num_classes = pred_class_logits.shape[-1]
-    class_weights = tf.constant(np.ones(num_classes))
+    class_weights = tf.constant(config.CLASS_WEIGHTS)
     weights = tf.gather(class_weights, target_class_ids)
     # Loss
     #loss = tf.nn.sparse_softmax_cross_entropy_with_logits(
     #    labels=target_class_ids, logits=pred_class_logits)
+    
     loss = tf.losses.sparse_softmax_cross_entropy(labels=target_class_ids, logits=pred_class_logits, weights=weights)
 
     # Erase losses of predictions of classes that are not in the active
@@ -2015,7 +2016,7 @@ class MaskRCNN():
                 [input_rpn_match, rpn_class_logits])
             rpn_bbox_loss = KL.Lambda(lambda x: rpn_bbox_loss_graph(config, *x), name="rpn_bbox_loss")(
                 [input_rpn_bbox, input_rpn_match, rpn_bbox])
-            class_loss = KL.Lambda(lambda x: mrcnn_class_loss_graph(*x), name="mrcnn_class_loss")(
+            class_loss = KL.Lambda(lambda x: mrcnn_class_loss_graph(config, *x), name="mrcnn_class_loss")(
                 [target_class_ids, mrcnn_class_logits, active_class_ids])
             bbox_loss = KL.Lambda(lambda x: mrcnn_bbox_loss_graph(*x), name="mrcnn_bbox_loss")(
                 [target_bbox, target_class_ids, mrcnn_bbox])

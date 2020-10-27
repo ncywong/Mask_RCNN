@@ -210,6 +210,10 @@ class Config(object):
     # Gradient norm clipping
     GRADIENT_CLIP_NORM = 5.0
 
+    # MRCNN class weights (10 classes)
+    CLASS_WEIGHTS = [1 for _ in range(10)]
+    CLASS_WEIGHTS[-3:] = [5 for _ in range(3)]
+
     def __init__(self):
         """Set values of computed attributes."""
         # Effective batch size
