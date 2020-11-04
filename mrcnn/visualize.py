@@ -535,8 +535,8 @@ def save_masked_image(image, boxes, masks, class_ids, class_names,
 
     # Show area outside image boundaries.
     height, width = image.shape[:2]
-    ax.set_ylim(height + 10, -10)
-    ax.set_xlim(-10, width + 10)
+    ax.set_ylim(height + 0, -0)
+    ax.set_xlim(-0, width + 0)
     ax.axis('off')
     ax.set_title(title)
 
