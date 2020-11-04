@@ -584,3 +584,4 @@ def save_masked_image(image, boxes, masks, class_ids, class_names,
             ax.add_patch(p)
     ax.imshow(masked_image.astype(np.uint8))
     plt.savefig(img_path)
+    plt.close()
