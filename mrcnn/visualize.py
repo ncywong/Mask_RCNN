@@ -583,6 +583,6 @@ def save_masked_image(image, boxes, masks, class_ids, class_names,
             p = Polygon(verts, facecolor="none", edgecolor=color)
             ax.add_patch(p)
     ax.imshow(masked_image.astype(np.uint8))
-    plt.subplots_adjust(left=0,right=figsize[1],bottom=0,top=figsize[0])
+    plt.subplots_adjust(left=0,right=1,bottom=0,top=1)
     plt.savefig(img_path, dpi=100)
     plt.close()
